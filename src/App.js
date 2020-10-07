@@ -1,25 +1,63 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useState ,useEffect} from 'react';
 import './App.css';
+import {Map} from 'ol';
+import {tileLayer, vectorLayer, view, source} from './map';
 
-function App() {
+
+
+import List from './components/List/List'
+
+const App = () => {
+
+  const [features, setFeatures] = useState([]);
+  
+  const [testy, setTesty] = useState(1);
+
+  const [statek, setStatek] = useState([]);
+
+  useEffect(() => {
+
+    const map = new Map({
+      layers: [tileLayer, vectorLayer],
+      view: view,
+      target: 'map'
+    });
+
+    
+    //setFeatures(2);
+    //setFeatures(source.getFeatures());
+
+    setTesty(5);
+
+    let i = 0;
+    const prv = features;
+    source.getFeatures().map(item => {
+      item.setId(i);
+      i++;
+      setFeatures([...features, "abc"]);
+      console.log(features);
+    })
+      
+  },[])
+  
+  const test = () => {
+    setFeatures([...features, "abc"]);
+    setStatek([...statek, "again"]);
+    console.log(features);
+    view.animate({
+      zoom: 14,
+    });
+    console.log(statek);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.Fragment>
+      <div id="map"></div>
+    <button onClick={() => test()}>Test</button>
+      <List id={testy}/>
+    <p>T {testy}</p>
+    <button onClick={() => setStatek([...statek, "again"])}>Click me</button>
+    </React.Fragment>
   );
 }
 
